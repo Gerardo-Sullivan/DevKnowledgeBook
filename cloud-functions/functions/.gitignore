@@ -6,3 +6,6 @@
 typings/
 
 node_modules/
+
+# firebase admin sdk credentials
+serviceAccountKey.json
