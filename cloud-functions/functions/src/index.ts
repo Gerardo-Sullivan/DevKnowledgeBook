@@ -1,9 +1,13 @@
 import * as functions from 'firebase-functions';
-// import * as admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
-// admin.initializeApp();
+admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+    databaseURL: "https://dev-knowledge-book.firebaseio.com"
+});
+//admin.initializeApp(functions.config().firebase);
 
-// const db = admin.firestore();
+const db = admin.firestore();
 
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
@@ -24,11 +28,11 @@ export const addUrl = functions.https.onRequest((request, response) => {
 //     response.send("You sent " + url);
 // });
 
-// export const getUser = functions.https.onRequest((request, response) => {
-//     db.collection("users").listDocuments()
-//         .then(snapshot => response.send(snapshot))
-//         .catch(error => {
-//             console.log(error);
-//             response.status(500).send(error);
-//         });
-// });
+export const getUser = functions.https.onRequest((request, response) => {
+    db.collection("users").get()
+        .then(snapshot => response.send(snapshot.docs.forEach(document => document.data)))
+        .catch(error => {
+            console.log(error);
+            response.status(500).send(error);
+        });
+});
