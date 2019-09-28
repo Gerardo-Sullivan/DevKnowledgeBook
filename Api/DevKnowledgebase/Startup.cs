@@ -34,7 +34,7 @@ namespace DevKnowledgebase
                 var naturalLanguageService = new NaturalLanguageUnderstandingService
                 {
                     UserName = "apikey",
-                    Password = Configuration["Secrets:IBM:apikey"],
+                    Password = Configuration["Secrets:IBM:apikey"], //TODO: change for production
                     ApiKey = Configuration["Secrets:IBM:apikey"], //TODO: change for production
                     VersionDate = Configuration["IBM:Version"],
                 };
