@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Api.Models;
+using Api.Models.Firestore;
+using Google.Cloud.Firestore;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +17,12 @@ namespace DevKnowledgebase.Controllers
     public class AnalyzeController : ControllerBase
     {
         private readonly INaturalLanguageUnderstandingService _naturalLanguageService;
+        private readonly FirestoreDb _db;
 
-        public AnalyzeController(INaturalLanguageUnderstandingService naturalLanguageService)
+        public AnalyzeController(INaturalLanguageUnderstandingService naturalLanguageService, FirestoreDb db)
         {
             _naturalLanguageService = naturalLanguageService;
+            _db = db;
         }
 
         //// GET api/values
@@ -73,6 +77,10 @@ namespace DevKnowledgebase.Controllers
                 try
                 {
                     AnalysisResults results = _naturalLanguageService.Analyze(parameters);
+                    CollectionReference bookmarks = _db.Collection("bookmarks");
+                    var bookmark = new Bookmark(results);
+                    //TODO: save bookmark document to firestore
+                    //TODO: need to save the associated categories, concepts, and keywords collection for the newly added document
 
                     return Ok(results);
                 }

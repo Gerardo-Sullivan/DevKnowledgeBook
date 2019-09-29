@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.Util;
+using Google.Cloud.Firestore;
 
 namespace DevKnowledgebase
 {
@@ -28,6 +29,12 @@ namespace DevKnowledgebase
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //TODO: Read about singleton vs transient vs scoped https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
+            services.AddSingleton<FirestoreDb>(seriveProvider =>
+            {
+                return FirestoreDb.Create(Configuration["Firebase:ProjectID"]); //TODO: Add google environment variable https://cloud.google.com/docs/authentication/getting-started
+            });
 
             services.AddSingleton<INaturalLanguageUnderstandingService>(serviceProvider =>
             {
