@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,13 @@ namespace Api.Models.Firestore
         [FirestoreProperty("tags")]
         public List<string> Tags { get; set; }
 
+        //TODO: add json serializer
         [FirestoreProperty("createdTime")]
         public Timestamp CreatedTime { get; set; }
+
+        public Bookmark()
+        {
+        }
 
         public Bookmark(AnalysisResults analysisResults)
         {

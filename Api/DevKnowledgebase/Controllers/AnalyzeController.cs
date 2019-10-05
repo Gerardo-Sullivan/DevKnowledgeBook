@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Models;
 using Api.Models.Firestore;
+using Api.Models.Responses;
 using Google.Cloud.Firestore;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
@@ -58,8 +59,11 @@ namespace DevKnowledgebase.Controllers
         //}
 
         [HttpPost]
-        public ActionResult<AnalysisResults> Analyze([Required][FromBody] AnalyzeBody body)
+        public async Task<ActionResult<AnalyzeResponse>> Analyze([Required][FromBody] AnalyzeBody body)
         {
+            AnalysisResults results;
+            Bookmark bookmark;
+
             if (ModelState.IsValid)
             {
                 Parameters parameters = new Parameters
@@ -76,18 +80,33 @@ namespace DevKnowledgebase.Controllers
 
                 try
                 {
-                    AnalysisResults results = _naturalLanguageService.Analyze(parameters);
-                    CollectionReference bookmarks = _db.Collection("bookmarks");
-                    var bookmark = new Bookmark(results);
-                    //TODO: save bookmark document to firestore
-                    //TODO: need to save the associated categories, concepts, and keywords collection for the newly added document
-
-                    return Ok(results);
+                    results = _naturalLanguageService.Analyze(parameters);
                 }
                 catch (Exception e)
                 {
                     return BadRequest(e);
                 }
+
+                //TODO: check url already exists in the db
+                CollectionReference bookmarks = _db.Collection("bookmarks");
+                Query query = bookmarks.WhereEqualTo("url", results.RetrievedUrl);
+                QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+                if (querySnapshot.Documents.Any())
+                {
+                    bookmark = querySnapshot.Documents.First().ConvertTo<Bookmark>();
+
+                    return Ok(bookmark);
+                }
+
+                bookmark = new Bookmark(results);
+                DocumentReference docReference = await bookmarks.AddAsync(bookmark);
+                //TODO: add categories, concepts and keywords collection.
+                bookmark.Id = docReference.Id;
+                //TODO: save bookmark document to firestore
+                //TODO: need to save the associated categories, concepts, and keywords collection for the newly added document
+
+                return Created(docReference.Path, bookmark);
             }
             else
             {
