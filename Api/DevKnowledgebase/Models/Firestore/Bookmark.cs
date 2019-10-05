@@ -14,6 +14,9 @@ namespace Api.Models.Firestore
         [FirestoreDocumentId]
         public string Id { get; set; } // FirestoreDocumentId must be placed on a property of type string or DocumentReference https://googleapis.github.io/google-cloud-dotnet/docs/Google.Cloud.Firestore/datamodel.html#mapping-with-attributed-classes
 
+        [JsonIgnore]
+        public string Path { get; set; }
+
         [FirestoreProperty("title")]
         public string Title { get; set; }
 

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Api.Models;
 using Api.Models.Firestore;
 using Api.Models.Responses;
+using Api.Services;
 using Google.Cloud.Firestore;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using Microsoft.AspNetCore.Mvc;
+using Api.Extensions;
 
 namespace DevKnowledgebase.Controllers
 {
@@ -18,12 +20,12 @@ namespace DevKnowledgebase.Controllers
     public class AnalyzeController : ControllerBase
     {
         private readonly INaturalLanguageUnderstandingService _naturalLanguageService;
-        private readonly FirestoreDb _db;
+        private readonly IFirestoreDbService _dbService;
 
-        public AnalyzeController(INaturalLanguageUnderstandingService naturalLanguageService, FirestoreDb db)
+        public AnalyzeController(INaturalLanguageUnderstandingService naturalLanguageService, IFirestoreDbService dbService)
         {
             _naturalLanguageService = naturalLanguageService;
-            _db = db;
+            _dbService = dbService;
         }
 
         //// GET api/values
@@ -66,47 +68,26 @@ namespace DevKnowledgebase.Controllers
 
             if (ModelState.IsValid)
             {
-                Parameters parameters = new Parameters
+                bookmark = await _dbService.GetBookmarkAsync(body.Url);
+
+                if (bookmark != null)
                 {
-                    Url = body.Url,
-                    Features = new Features
-                    {
-                        Categories = new CategoriesOptions(),
-                        Concepts = new ConceptsOptions(),
-                        Keywords = new KeywordsOptions(),
-                        Metadata = new MetadataOptions()
-                    },
-                };
+                    return Ok(bookmark);
+                }
 
                 try
                 {
-                    results = _naturalLanguageService.Analyze(parameters);
+                    results = _naturalLanguageService.Analyze(body.Url);
                 }
                 catch (Exception e)
                 {
                     return BadRequest(e);
                 }
 
-                //TODO: check url already exists in the db
-                CollectionReference bookmarks = _db.Collection("bookmarks");
-                Query query = bookmarks.WhereEqualTo("url", results.RetrievedUrl);
-                QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
-
-                if (querySnapshot.Documents.Any())
-                {
-                    bookmark = querySnapshot.Documents.First().ConvertTo<Bookmark>();
-
-                    return Ok(bookmark);
-                }
-
                 bookmark = new Bookmark(results);
-                DocumentReference docReference = await bookmarks.AddAsync(bookmark);
-                //TODO: add categories, concepts and keywords collection.
-                bookmark.Id = docReference.Id;
-                //TODO: save bookmark document to firestore
-                //TODO: need to save the associated categories, concepts, and keywords collection for the newly added document
+                bookmark = await _dbService.AddBookmarkAsync(bookmark);
 
-                return Created(docReference.Path, bookmark);
+                return Created(bookmark.Path, bookmark);
             }
             else
             {
