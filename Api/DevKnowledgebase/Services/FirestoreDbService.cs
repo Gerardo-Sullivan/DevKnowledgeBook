@@ -16,7 +16,34 @@ namespace Api.Services
         public FirestoreDbService(FirestoreDb db)
         {
             _db = db;
-            _bookmarksCollection = _db.Collection("bookmarks");
+            _bookmarksCollection = _db.Collection(Bookmark.COLLECTIONPATH);
+        }
+
+        private Task AddCategory(CollectionReference categoriesCollection, Category category)
+        {
+            return categoriesCollection.AddAsync(category);
+        }
+
+        private Task AddConcept(CollectionReference conceptsCollection, Concept concept)
+        {
+            return conceptsCollection.AddAsync(concept);
+        }
+
+        private Task AddConcept(CollectionReference keywordCollection, Keyword keyword)
+        {
+            return keywordCollection.AddAsync(keyword);
+        }
+
+        private async Task AddCategories(DocumentReference bookmarkDocument, Bookmark bookmark)
+        {
+            CollectionReference categoriesReference = bookmarkDocument.Collection(Category.COLLECTIONPATH);
+
+            foreach (Category category in bookmark.CategoriesCollection)
+            {
+                AddCategory(categoriesReference, category); //TODO: complete
+            }
+
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -28,7 +55,7 @@ namespace Api.Services
         /// <returns></returns>
         public async Task<Bookmark> GetBookmarkAsync(string url)
         {
-            Query query = _bookmarksCollection.WhereEqualTo("url", url);
+            Query query = _bookmarksCollection.WhereEqualTo("url", url); //TODO: change "url" to use reflection
             QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
 
             if (querySnapshot.Documents.Any())
@@ -55,7 +82,7 @@ namespace Api.Services
 
         public async Task<bool> HasBookmarkAsync(string url)
         {
-            Query query = _bookmarksCollection.WhereEqualTo("url", url);
+            Query query = _bookmarksCollection.WhereEqualTo("url", url); //TODO: change "url" to use reflection
             QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
 
             if (querySnapshot.Documents.Any())
@@ -68,13 +95,13 @@ namespace Api.Services
             }
         }
 
-        public async Task<Bookmark> AddBookmarkAsync(Bookmark bookmark)
+        public async Task AddBookmarkAsync(Bookmark bookmark)
         {
-            DocumentReference docReference = await _bookmarksCollection.AddAsync(bookmark);
-            bookmark.Id = docReference.Id;
+            DocumentReference bookmarkDocument = await _bookmarksCollection.AddAsync(bookmark);
+
             //TODO: need to save the associated categories, concepts, and keywords collection for the newly added document
 
-            return bookmark;
+            throw new NotImplementedException();
         }
     }
 
