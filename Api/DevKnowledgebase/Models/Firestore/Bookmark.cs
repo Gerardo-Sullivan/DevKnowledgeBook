@@ -67,5 +67,13 @@ namespace Api.Models.Firestore
             ConceptsCollection.AddRange(analysisResults.Concepts.Select(c => new Concept(c)));
             KeywordsCollection.AddRange(analysisResults.Keywords.Select(k => new Keyword(k)));
         }
+
+        public Bookmark(AnalysisResults analysisResults, List<string> tags) : this(analysisResults)
+        {
+            if (tags != null)
+            {
+                Tags = tags;
+            }
+        }
     }
 }

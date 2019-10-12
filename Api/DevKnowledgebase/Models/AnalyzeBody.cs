@@ -23,5 +23,7 @@ namespace Api.Models
                 _url = value.TrimEnd('/'); ;
             }
         }
+
+        public List<string> Tags { get; set; }
     }
 }

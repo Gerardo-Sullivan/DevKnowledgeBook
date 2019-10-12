@@ -84,7 +84,7 @@ namespace DevKnowledgebase.Controllers
                     return BadRequest(e);
                 }
 
-                bookmark = new Bookmark(results);
+                bookmark = new Bookmark(results, body.Tags);
                 bookmark = await _dbService.AddBookmarkAsync(bookmark);
 
                 return Created(bookmark.Path, bookmark);
