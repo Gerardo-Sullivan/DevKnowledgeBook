@@ -12,11 +12,14 @@ using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using Microsoft.AspNetCore.Mvc;
 using Api.Extensions;
+using System.Net;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DevKnowledgebase.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Produces("application/json")]
     public class AnalyzeController : ControllerBase
     {
         private readonly INaturalLanguageUnderstandingService _naturalLanguageService;
@@ -61,6 +64,9 @@ namespace DevKnowledgebase.Controllers
         //}
 
         [HttpPost]
+        [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ModelStateDictionary), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<AnalyzeResponse>> Analyze([Required][FromBody] AnalyzeBody body)
         {
             AnalysisResults results;
@@ -70,7 +76,7 @@ namespace DevKnowledgebase.Controllers
             {
                 bookmark = await _dbService.GetBookmarkAsync(body.Url);
 
-                if (bookmark != null)
+                if (bookmark != null) //TODO: might want to save new custom tags
                 {
                     return Ok(bookmark);
                 }
