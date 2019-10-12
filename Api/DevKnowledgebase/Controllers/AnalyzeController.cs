@@ -67,7 +67,7 @@ namespace DevKnowledgebase.Controllers
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ModelStateDictionary), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<AnalyzeResponse>> Analyze([Required][FromBody] AnalyzeBody body)
+        public async Task<ActionResult> Analyze([Required][FromBody] AnalyzeBody body)
         {
             AnalysisResults results;
             Bookmark bookmark;
