@@ -45,7 +45,6 @@ namespace Api.Services
 
         //    throw new NotImplementedException();
         //}
-
         /// <summary>
         /// Returns the first <see cref="Bookmark"/> with the matching url property
         ///
@@ -140,9 +139,9 @@ namespace Api.Services
         {
             DocumentReference bookmarkDocument = await _bookmarksCollection.AddAsync(bookmark);
 
-            //TODO: set the boomarks id
+            bookmark.AddDocumentReference(bookmarkDocument);
 
-            throw new NotImplementedException();
+            return bookmark;
         }
     }
 

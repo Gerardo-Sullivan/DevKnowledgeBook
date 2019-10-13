@@ -54,6 +54,8 @@ namespace Api.Models.Firestore
         {
             Title = analysisResults.Metadata.Title;
             Url = analysisResults.RetrievedUrl;
+
+            // NOTE: categories, concepts and keywords are assumed to be in order from the natural language processor
             Categories.AddRange(analysisResults.Categories.Select(c => c.Label));
             Concepts.AddRange(analysisResults.Concepts.Select(c => c.Text).ToList());
             Keywords.AddRange(analysisResults.Keywords.Select(k => k.Text).ToList());
@@ -62,6 +64,16 @@ namespace Api.Models.Firestore
         public Bookmark(AnalysisResults analysisResults, List<string> tags) : this(analysisResults)
         {
             Tags.AddRange(tags);
+        }
+
+        /// <summary>
+        /// Adds important Firestore to the <see cref="Bookmark"/>
+        /// </summary>
+        /// <param name="reference"></param>
+        public void AddDocumentReference(DocumentReference reference)
+        {
+            Id = reference.Id;
+            Path = reference.Path;
         }
     }
 }
