@@ -10,7 +10,7 @@ namespace ApiTests.BookmarkTests
     public class DefaultConstructorTests
     {
         [TestMethod]
-        public void CategoriesTest()
+        public void CategoriesNotNullTest()
         {
             var bookmark = new Bookmark();
 
@@ -18,7 +18,7 @@ namespace ApiTests.BookmarkTests
         }
 
         [TestMethod]
-        public void ConceptsTest()
+        public void ConceptsNotNullTest()
         {
             var bookmark = new Bookmark();
 
@@ -26,7 +26,7 @@ namespace ApiTests.BookmarkTests
         }
 
         [TestMethod]
-        public void KeywordsTest()
+        public void KeywordsNotNullTest()
         {
             var bookmark = new Bookmark();
 
@@ -34,7 +34,7 @@ namespace ApiTests.BookmarkTests
         }
 
         [TestMethod]
-        public void TagsTest()
+        public void TagsNotNullTest()
         {
             var bookmark = new Bookmark();
 
@@ -42,7 +42,7 @@ namespace ApiTests.BookmarkTests
         }
 
         [TestMethod]
-        public void CreatedTimeTest()
+        public void CreatedTimeNotNullTest()
         {
             var bookmark = new Bookmark();
 
