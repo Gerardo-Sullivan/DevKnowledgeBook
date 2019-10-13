@@ -19,41 +19,41 @@ namespace Api.Services
             _bookmarksCollection = _db.Collection(Bookmark.COLLECTIONPATH);
         }
 
-        private Task AddCategory(CollectionReference categoriesCollection, Category category)
-        {
-            return categoriesCollection.AddAsync(category);
-        }
+        //private Task AddCategory(CollectionReference categoriesCollection, Category category)
+        //{
+        //    return categoriesCollection.AddAsync(category);
+        //}
 
-        private Task AddConcept(CollectionReference conceptsCollection, Concept concept)
-        {
-            return conceptsCollection.AddAsync(concept);
-        }
+        //private Task AddConcept(CollectionReference conceptsCollection, Concept concept)
+        //{
+        //    return conceptsCollection.AddAsync(concept);
+        //}
 
-        private Task AddConcept(CollectionReference keywordCollection, Keyword keyword)
-        {
-            return keywordCollection.AddAsync(keyword);
-        }
+        //private Task AddConcept(CollectionReference keywordCollection, Keyword keyword)
+        //{
+        //    return keywordCollection.AddAsync(keyword);
+        //}
 
-        private async Task AddCategories(DocumentReference bookmarkDocument, Bookmark bookmark)
-        {
-            CollectionReference categoriesReference = bookmarkDocument.Collection(Category.COLLECTIONPATH);
+        //private async Task AddCategories(DocumentReference bookmarkDocument, Bookmark bookmark)
+        //{
+        //    CollectionReference categoriesReference = bookmarkDocument.Collection(Category.COLLECTIONPATH);
 
-            foreach (Category category in bookmark.CategoriesCollection)
-            {
-                AddCategory(categoriesReference, category); //TODO: complete
-            }
+        //    foreach (Category category in bookmark.CategoriesCollection)
+        //    {
+        //        AddCategory(categoriesReference, category); //TODO: complete
+        //    }
 
-            throw new NotImplementedException();
-        }
+        //    throw new NotImplementedException();
+        //}
 
         /// <summary>
         /// Returns the first <see cref="Bookmark"/> with the matching url property
         ///
-        /// Returns <see cref="null"/> if no <see cref="Bookmark"/> has a matching url property
+        /// Returns <see cref="null"/> if no <see cref="Bookmark"/> with a matching url property was found
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<Bookmark> GetBookmarkAsync(string url)
+        public async Task<Bookmark> GetBookmarkFromUrlAsync(string url)
         {
             Query query = _bookmarksCollection.WhereEqualTo("url", url); //TODO: change "url" to use reflection
             QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
@@ -72,14 +72,50 @@ namespace Api.Services
             }
         }
 
-        public IEnumerable<Bookmark> GetBookmarks()
+        /// <summary>
+        /// Returns a <see cref="bookmark"/> matching a specific id.
+        ///
+        /// Returns null if no bookmark was found.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Bookmark> GetBookmarkAsync(string id)
         {
-            IAsyncEnumerable<DocumentReference> bookmarkDocuments = _bookmarksCollection.ListDocumentsAsync();
-            IAsyncEnumerable<Bookmark> bookmarks = bookmarkDocuments.Cast<Bookmark>();
+            DocumentReference bookmarkReference = _bookmarksCollection.Document(id);
+            DocumentSnapshot bookmarkSnapshot = await bookmarkReference.GetSnapshotAsync();
 
-            return bookmarks.ToEnumerable();
+            if (bookmarkSnapshot.Exists)
+            {
+                return bookmarkSnapshot.ConvertTo<Bookmark>();
+            }
+            else
+            {
+                return null;
+            }
         }
 
+        /// <summary>
+        /// Returns all Bookmarks
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Bookmark>> GetBookmarksAsync()
+        {
+            List<Bookmark> bookmarks = new List<Bookmark>();
+            QuerySnapshot bookmarksSnapshot = await _bookmarksCollection.GetSnapshotAsync();
+
+            foreach (var bookmarkSnapshot in bookmarksSnapshot.Documents)
+            {
+                bookmarks.Add(bookmarkSnapshot.ConvertTo<Bookmark>());
+            }
+
+            return bookmarks;
+        }
+
+        /// <summary>
+        /// Returns <see cref="true"/> if a Bookmark was found with the matching url property
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public async Task<bool> HasBookmarkAsync(string url)
         {
             Query query = _bookmarksCollection.WhereEqualTo("url", url); //TODO: change "url" to use reflection
@@ -95,11 +131,16 @@ namespace Api.Services
             }
         }
 
-        public async Task AddBookmarkAsync(Bookmark bookmark)
+        /// <summary>
+        /// Adds a Bookmark to the database
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <returns></returns>
+        public async Task<Bookmark> AddBookmarkAsync(Bookmark bookmark)
         {
             DocumentReference bookmarkDocument = await _bookmarksCollection.AddAsync(bookmark);
 
-            //TODO: need to save the associated categories, concepts, and keywords collection for the newly added document
+            //TODO: set the boomarks id
 
             throw new NotImplementedException();
         }
@@ -107,9 +148,11 @@ namespace Api.Services
 
     public interface IFirestoreDbService
     {
-        Task<Bookmark> GetBookmarkAsync(string url);
+        Task<Bookmark> GetBookmarkFromUrlAsync(string url);
 
-        IEnumerable<Bookmark> GetBookmarks();
+        Task<Bookmark> GetBookmarkAsync(string id);
+
+        Task<List<Bookmark>> GetBookmarksAsync();
 
         Task<bool> HasBookmarkAsync(string url);
 

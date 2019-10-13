@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Models;
 using Api.Models.Firestore;
-using Api.Models.Responses;
 using Api.Services;
 using Google.Cloud.Firestore;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
@@ -18,8 +17,8 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace DevKnowledgebase.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
     [Produces("application/json")]
+    [ApiController]
     public class AnalyzeController : ControllerBase
     {
         private readonly INaturalLanguageUnderstandingService _naturalLanguageService;
@@ -31,50 +30,19 @@ namespace DevKnowledgebase.Controllers
             _dbService = dbService;
         }
 
-        //// GET api/values
-        //[HttpGet]
-        //public ActionResult<IEnumerable<string>> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<string> Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/values
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{
-        //}
-
-        //// PUT api/values/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-
+        [Route("[action]")]
         [HttpPost]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ModelStateDictionary), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> Analyze([Required][FromBody] AnalyzeBody body)
+        public async Task<IActionResult> Bookmark([Required][FromBody] AnalyzeBody body)
         {
             AnalysisResults results;
             Bookmark bookmark;
 
             if (ModelState.IsValid)
             {
-                bookmark = await _dbService.GetBookmarkAsync(body.Url);
+                bookmark = await _dbService.GetBookmarkFromUrlAsync(body.Url);
 
                 if (bookmark != null) //TODO: might want to save new custom tags
                 {

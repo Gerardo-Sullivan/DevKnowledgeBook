@@ -14,7 +14,7 @@ namespace Api.Models.Firestore
         public const string COLLECTIONPATH = "bookmarks";
 
         [FirestoreDocumentId]
-        public string Id { get; private set; } // FirestoreDocumentId must be placed on a property of type string or DocumentReference https://googleapis.github.io/google-cloud-dotnet/docs/Google.Cloud.Firestore/datamodel.html#mapping-with-attributed-classes
+        public string Id { get; set; } // FirestoreDocumentId must be placed on a property of type string or DocumentReference https://googleapis.github.io/google-cloud-dotnet/docs/Google.Cloud.Firestore/datamodel.html#mapping-with-attributed-classes
 
         [JsonIgnore]
         public string Path { get; set; }
@@ -41,17 +41,17 @@ namespace Api.Models.Firestore
         [FirestoreProperty("createdTime")]
         public Timestamp CreatedTime { get; set; }
 
-        public List<Category> CategoriesCollection { get; set; }
+        //public List<Category> CategoriesCollection { get; set; }
 
-        public List<Concept> ConceptsCollection { get; set; }
+        //public List<Concept> ConceptsCollection { get; set; }
 
-        public List<Keyword> KeywordsCollection { get; set; }
+        //public List<Keyword> KeywordsCollection { get; set; }
 
         public Bookmark()
         {
-            CategoriesCollection = new List<Category>();
-            ConceptsCollection = new List<Concept>();
-            KeywordsCollection = new List<Keyword>();
+            //CategoriesCollection = new List<Category>();
+            //ConceptsCollection = new List<Concept>();
+            //KeywordsCollection = new List<Keyword>();
         }
 
         public Bookmark(AnalysisResults analysisResults) : this()
@@ -63,9 +63,9 @@ namespace Api.Models.Firestore
             Keywords = analysisResults.Keywords.Select(k => k.Text).ToList();
             Tags = new List<string>();
             CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow);
-            CategoriesCollection.AddRange(analysisResults.Categories.Select(c => new Category(c)));
-            ConceptsCollection.AddRange(analysisResults.Concepts.Select(c => new Concept(c)));
-            KeywordsCollection.AddRange(analysisResults.Keywords.Select(k => new Keyword(k)));
+            //CategoriesCollection.AddRange(analysisResults.Categories.Select(c => new Category(c)));
+            //ConceptsCollection.AddRange(analysisResults.Concepts.Select(c => new Concept(c)));
+            //KeywordsCollection.AddRange(analysisResults.Keywords.Select(k => new Keyword(k)));
         }
 
         public Bookmark(AnalysisResults analysisResults, List<string> tags) : this(analysisResults)
