@@ -8,7 +8,22 @@ namespace Api.Models
 {
     public class AnalyzeBody
     {
+        private string _url;
+
         [Required]
-        public string Url { get; set; }
+        [Url]
+        public string Url
+        {
+            get
+            {
+                return _url;
+            }
+            set
+            {
+                _url = value.TrimEnd('/'); ;
+            }
+        }
+
+        public List<string> Tags { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.Util;
 using Google.Cloud.Firestore;
+using Api.Services;
 
 namespace DevKnowledgebase
 {
@@ -34,6 +35,13 @@ namespace DevKnowledgebase
             services.AddSingleton<FirestoreDb>(seriveProvider =>
             {
                 return FirestoreDb.Create(Configuration["Firebase:ProjectID"]); //TODO: Add google environment variable https://cloud.google.com/docs/authentication/getting-started
+            });
+
+            services.AddSingleton<IFirestoreDbService>(serviceProvider =>
+            {
+                var db = serviceProvider.GetService<FirestoreDb>();
+
+                return new FirestoreDbService(db);
             });
 
             services.AddSingleton<INaturalLanguageUnderstandingService>(serviceProvider =>

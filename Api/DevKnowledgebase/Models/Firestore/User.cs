@@ -9,8 +9,10 @@ namespace Api.Models.Firestore
     [FirestoreData]
     public class User
     {
+        public const string COLLECTIONPATH = "users";
+
         [FirestoreDocumentId]
-        public string Id { get; set; }
+        public string Id { get; private set; }
 
         [FirestoreProperty("firstname")]
         public string Firstname { get; set; }
