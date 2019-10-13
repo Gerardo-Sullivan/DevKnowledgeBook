@@ -41,39 +41,27 @@ namespace Api.Models.Firestore
         [FirestoreProperty("createdTime")]
         public Timestamp CreatedTime { get; set; }
 
-        //public List<Category> CategoriesCollection { get; set; }
-
-        //public List<Concept> ConceptsCollection { get; set; }
-
-        //public List<Keyword> KeywordsCollection { get; set; }
-
         public Bookmark()
         {
-            //CategoriesCollection = new List<Category>();
-            //ConceptsCollection = new List<Concept>();
-            //KeywordsCollection = new List<Keyword>();
+            Categories = new List<string>();
+            Concepts = new List<string>();
+            Keywords = new List<string>();
+            Tags = new List<string>();
+            CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow);
         }
 
         public Bookmark(AnalysisResults analysisResults) : this()
         {
             Title = analysisResults.Metadata.Title;
             Url = analysisResults.RetrievedUrl;
-            Categories = analysisResults.Categories.Select(c => c.Label).ToList();
-            Concepts = analysisResults.Concepts.Select(c => c.Text).ToList();
-            Keywords = analysisResults.Keywords.Select(k => k.Text).ToList();
-            Tags = new List<string>();
-            CreatedTime = Timestamp.FromDateTime(DateTime.UtcNow);
-            //CategoriesCollection.AddRange(analysisResults.Categories.Select(c => new Category(c)));
-            //ConceptsCollection.AddRange(analysisResults.Concepts.Select(c => new Concept(c)));
-            //KeywordsCollection.AddRange(analysisResults.Keywords.Select(k => new Keyword(k)));
+            Categories.AddRange(analysisResults.Categories.Select(c => c.Label));
+            Concepts.AddRange(analysisResults.Concepts.Select(c => c.Text).ToList());
+            Keywords.AddRange(analysisResults.Keywords.Select(k => k.Text).ToList());
         }
 
         public Bookmark(AnalysisResults analysisResults, List<string> tags) : this(analysisResults)
         {
-            if (tags != null)
-            {
-                Tags = tags;
-            }
+            Tags.AddRange(tags);
         }
     }
 }
