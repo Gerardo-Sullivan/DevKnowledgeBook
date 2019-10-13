@@ -15,7 +15,7 @@ using IBM.WatsonDeveloperCloud.Util;
 using Google.Cloud.Firestore;
 using Api.Services;
 
-namespace DevKnowledgebase
+namespace Api
 {
     public class Startup
     {

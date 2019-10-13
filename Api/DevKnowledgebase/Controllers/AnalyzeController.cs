@@ -14,7 +14,7 @@ using Api.Extensions;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace DevKnowledgebase.Controllers
+namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [Produces("application/json")]
