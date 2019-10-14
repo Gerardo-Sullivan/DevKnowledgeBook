@@ -16,9 +16,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Api.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    [ApiController]
+    [Consumes("application/json")]
     public class AnalyzeController : ControllerBase
     {
         private readonly INaturalLanguageUnderstandingService _naturalLanguageService;
@@ -30,8 +31,8 @@ namespace Api.Controllers
             _dbService = dbService;
         }
 
-        [Route("[action]")]
         [HttpPost]
+        [Route("[action]")]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ModelStateDictionary), (int)HttpStatusCode.BadRequest)]

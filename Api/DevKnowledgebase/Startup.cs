@@ -14,6 +14,8 @@ using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.Util;
 using Google.Cloud.Firestore;
 using Api.Services;
+using System.Reflection;
+using System.IO;
 
 namespace Api
 {
@@ -58,6 +60,15 @@ namespace Api
 
                 return naturalLanguageService;
             });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "DevKnowledgebase API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +86,13 @@ namespace Api
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "DevKnowledgebase API V1");
+                options.RoutePrefix = "api";
+            });
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Api.Models.Firestore;
 using Api.Services;
@@ -9,9 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
-    [ApiController]
+    [Consumes("application/json")]
     public class BookmarksController : Controller
     {
         private readonly IFirestoreDbService _dbService;
@@ -54,6 +56,7 @@ namespace Api.Controllers
         //}
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<Bookmark>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
             List<Bookmark> bookmarks = await _dbService.GetBookmarksAsync();
@@ -62,6 +65,8 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Get([Required]string id)
         {
             Bookmark bookmark = await _dbService.GetBookmarkAsync(id);
