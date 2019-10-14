@@ -25,5 +25,10 @@ namespace Api.Models
         }
 
         public List<string> Tags { get; set; }
+
+        public AnalyzeBody()
+        {
+            Tags = new List<string>();
+        }
     }
 }
