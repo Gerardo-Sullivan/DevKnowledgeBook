@@ -13,9 +13,11 @@ using Microsoft.AspNetCore.Mvc;
 using Api.Extensions;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]

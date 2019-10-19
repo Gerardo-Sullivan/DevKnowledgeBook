@@ -16,6 +16,7 @@ using Google.Cloud.Firestore;
 using Api.Services;
 using System.Reflection;
 using System.IO;
+using AspNetCore.Firebase.Authentication.Extensions;
 
 namespace Api
 {
@@ -32,6 +33,8 @@ namespace Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddFirebaseAuthentication(Configuration["Firebase:ProjectID"], Configuration["Firebase:ProjectID"]);
 
             //TODO: Read about singleton vs transient vs scoped https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddSingleton<FirestoreDb>(seriveProvider =>
@@ -86,6 +89,7 @@ namespace Api
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseAuthentication();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
