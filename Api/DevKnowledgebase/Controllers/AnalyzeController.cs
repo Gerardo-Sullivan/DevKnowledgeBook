@@ -38,36 +38,18 @@ namespace Api.Controllers
         [ProducesResponseType(typeof(ModelStateDictionary), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Bookmark([Required][FromBody] AnalyzeBody body)
         {
-            AnalysisResults results;
-            Bookmark bookmark;
+            var bookmark = await _dbService.GetBookmarkFromUrlAsync(body.Url);
 
-            if (ModelState.IsValid)
+            if (bookmark != null) //TODO: might want to save new custom tags
             {
-                bookmark = await _dbService.GetBookmarkFromUrlAsync(body.Url);
-
-                if (bookmark != null) //TODO: might want to save new custom tags
-                {
-                    return Ok(bookmark);
-                }
-
-                try
-                {
-                    results = _naturalLanguageService.Analyze(body.Url);
-                }
-                catch (Exception e)
-                {
-                    return BadRequest(e);
-                }
-
-                bookmark = new Bookmark(results, body.Tags);
-                bookmark = await _dbService.AddBookmarkAsync(bookmark);
-
-                return Created(bookmark.Path, bookmark);
+                return Ok(bookmark);
             }
-            else
-            {
-                return BadRequest(ModelState);
-            }
+
+            var results = _naturalLanguageService.Analyze(body.Url);
+            bookmark = new Bookmark(results, body.Tags);
+            bookmark = await _dbService.AddBookmarkAsync(bookmark);
+
+            return Created(bookmark.Path, bookmark);
         }
     }
 }

@@ -72,13 +72,9 @@ namespace Api.Controllers
             Bookmark bookmark = await _dbService.GetBookmarkAsync(id);
 
             if (bookmark is null)
-            {
                 return NotFound();
-            }
-            else
-            {
-                return Ok(bookmark);
-            }
+
+            return Ok(bookmark);
         }
     }
 }

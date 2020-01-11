@@ -16,6 +16,7 @@ using Google.Cloud.Firestore;
 using Api.Services;
 using System.Reflection;
 using System.IO;
+using Api.ActionFilters;
 
 namespace Api
 {
@@ -31,7 +32,10 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options =>
+            {
+                options.Filters.Add<ValidateModelAttribute>();
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //TODO: Read about singleton vs transient vs scoped https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddSingleton<FirestoreDb>(seriveProvider =>
@@ -91,7 +95,7 @@ namespace Api
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "DevKnowledgebase API V1");
-                options.RoutePrefix = "api";
+                options.RoutePrefix = "docs";
             });
         }
     }
