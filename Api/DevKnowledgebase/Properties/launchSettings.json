@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/Api",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:61718",
       "sslPort": 44306
@@ -18,8 +22,17 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
+    "IIS": {
+      "commandName": "IIS",
+      "launchBrowser": true,
+      "launchUrl": "docs",
+      "environmentVariables": {
+        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\Gerardo\\dev-knowledge-book-firebase-adminsdk-c7myl-5090886adb.json",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
     "DevKnowledgebase": {
-      "commandName": "Project",
+      "commandName": "IIS",
       "launchBrowser": true,
       "launchUrl": "api",
       "environmentVariables": {

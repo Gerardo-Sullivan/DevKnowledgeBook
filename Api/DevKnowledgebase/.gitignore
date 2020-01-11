@@ -1,2 +1,5 @@
 ﻿# Secrets
 appsettings.Release.json
+
+# IIS
+web.config
