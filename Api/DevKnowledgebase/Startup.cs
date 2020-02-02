@@ -10,7 +10,7 @@ using Google.Cloud.Firestore;
 using Api.Services;
 using System.Reflection;
 using System.IO;
-using Api.Attributes;
+using Api.ActionFilters;
 using Api.Models.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Collections;
@@ -41,7 +41,7 @@ namespace Api
 
             services.AddMvc(options =>
             {
-                options.Filters.Add<ApiKeyAuthorizationAttribute>();
+                options.Filters.Add<ApiKeyAuthorizationFilter>();
                 options.Filters.Add<ValidateModelAttribute>();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -74,7 +74,7 @@ namespace Api
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "DevKnowledgebase API", Version = "v1" });
                 options.AddSecurityDefinition("Api Key", new ApiKeyScheme
                 {
-                    Name = ApiKeyAuthorizationAttribute._apiKeyHeader,
+                    Name = ApiKeyAuthorizationFilter._apiKeyHeader,
                     In = "Header",
                     Description = "Please enter the api key for the application.",
                 });
