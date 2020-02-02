@@ -1,22 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
-using IBM.WatsonDeveloperCloud.Util;
 using Google.Cloud.Firestore;
 using Api.Services;
 using System.Reflection;
 using System.IO;
-using Api.ActionFilters;
+using Api.Attributes;
+using Api.Models.Configuration;
+using Swashbuckle.AspNetCore.Swagger;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Api
 {
@@ -32,35 +31,40 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<DevKnowledgeBookConfiguration>(Configuration.GetSection("DevKnowledgeBook"));
+            services.Configure<IbmConfiguration>(Configuration.GetSection("IBM"));
+
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+            });
+
             services.AddMvc(options =>
             {
+                options.Filters.Add<ApiKeyAuthorizationAttribute>();
                 options.Filters.Add<ValidateModelAttribute>();
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //TODO: Read about singleton vs transient vs scoped https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
-            services.AddSingleton<FirestoreDb>(seriveProvider =>
+            services.AddSingleton<FirestoreDb>(serviceProvider =>
             {
                 return FirestoreDb.Create(Configuration["Firebase:ProjectID"]); //TODO: Add google environment variable https://cloud.google.com/docs/authentication/getting-started
             });
 
-            services.AddSingleton<IFirestoreDbService>(serviceProvider =>
-            {
-                var db = serviceProvider.GetService<FirestoreDb>();
-
-                return new FirestoreDbService(db);
-            });
+            services.AddSingleton<IFirestoreDbContext, FirestoreDbContext>();
 
             services.AddSingleton<INaturalLanguageUnderstandingService>(serviceProvider =>
             {
+                var IbmConfiguration = serviceProvider.GetService<IOptions<IbmConfiguration>>().Value;
                 var naturalLanguageService = new NaturalLanguageUnderstandingService
                 {
-                    UserName = "apikey",
-                    Password = Configuration["Secrets:IBM:apikey"], //TODO: change for production
-                    ApiKey = Configuration["Secrets:IBM:apikey"], //TODO: change for production
-                    VersionDate = Configuration["IBM:Version"],
+                    UserName = "ApiKey",
+                    Password = IbmConfiguration.ApiKey, //TODO: change for production
+                    ApiKey = IbmConfiguration.ApiKey, //TODO: change for production
+                    VersionDate = IbmConfiguration.Version,
                 };
 
-                naturalLanguageService.SetEndpoint(Configuration["IBM:Url"]);
+                naturalLanguageService.SetEndpoint(IbmConfiguration.Url);
 
                 return naturalLanguageService;
             });
@@ -68,6 +72,16 @@ namespace Api
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "DevKnowledgebase API", Version = "v1" });
+                options.AddSecurityDefinition("Api Key", new ApiKeyScheme
+                {
+                    Name = ApiKeyAuthorizationAttribute._apiKeyHeader,
+                    In = "Header",
+                    Description = "Please enter the api key for the application.",
+                });
+                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Api Key", Enumerable.Empty<string>() },
+                });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -95,7 +109,7 @@ namespace Api
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "DevKnowledgebase API V1");
-                options.RoutePrefix = "docs";
+                options.RoutePrefix = "api/docs";
             });
         }
     }

@@ -16,7 +16,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api",
+      "launchUrl": "api/docs",
       "environmentVariables": {
         "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\Gerardo\\dev-knowledge-book-firebase-adminsdk-c7myl-5090886adb.json",
         "ASPNETCORE_ENVIRONMENT": "Development"

@@ -1,15 +1,13 @@
 ﻿using Google.Cloud.Firestore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api.Models.Firestore
 {
     [FirestoreData]
     public class User
     {
-        public const string COLLECTIONPATH = "users";
+        public const string COLLECTION_PATH = "users";
 
         [FirestoreDocumentId]
         public string Id { get; private set; }

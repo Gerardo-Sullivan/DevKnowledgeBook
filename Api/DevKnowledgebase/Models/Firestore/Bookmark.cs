@@ -4,14 +4,13 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Api.Models.Firestore
 {
     [FirestoreData]
     public class Bookmark
     {
-        public const string COLLECTIONPATH = "bookmarks";
+        public const string COLLECTION_PATH = "bookmarks";
 
         [FirestoreDocumentId]
         public string Id { get; set; } // FirestoreDocumentId must be placed on a property of type string or DocumentReference https://googleapis.github.io/google-cloud-dotnet/docs/Google.Cloud.Firestore/datamodel.html#mapping-with-attributed-classes

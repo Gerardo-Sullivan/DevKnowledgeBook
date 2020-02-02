@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Api.Models.Firestore;
@@ -16,11 +14,11 @@ namespace Api.Controllers
     [Consumes("application/json")]
     public class BookmarksController : Controller
     {
-        private readonly IFirestoreDbService _dbService;
+        private readonly IFirestoreDbContext _dbContext;
 
-        public BookmarksController(IFirestoreDbService dbService)
+        public BookmarksController(IFirestoreDbContext dbService)
         {
-            _dbService = dbService;
+            _dbContext = dbService;
         }
 
         //// GET api/values
@@ -59,7 +57,7 @@ namespace Api.Controllers
         [ProducesResponseType(typeof(List<Bookmark>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
-            List<Bookmark> bookmarks = await _dbService.GetBookmarksAsync();
+            List<Bookmark> bookmarks = await _dbContext.GetBookmarksAsync();
 
             return Ok(bookmarks);
         }
@@ -69,10 +67,12 @@ namespace Api.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> Get([Required]string id)
         {
-            Bookmark bookmark = await _dbService.GetBookmarkAsync(id);
+            Bookmark bookmark = await _dbContext.GetBookmarkAsync(id);
 
             if (bookmark is null)
+            {
                 return NotFound();
+            }
 
             return Ok(bookmark);
         }
