@@ -16,6 +16,9 @@ using Swashbuckle.AspNetCore.Swagger;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Api.Models;
 
 namespace Api
 {
@@ -39,11 +42,12 @@ namespace Api
                 options.LowercaseUrls = true;
             });
 
-            services.AddMvc(options =>
+            services.AddControllers(options =>
             {
+                options.EnableEndpointRouting = false;
                 options.Filters.Add<ApiKeyAuthorizationFilter>();
                 options.Filters.Add<ValidateModelAttribute>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             //TODO: Read about singleton vs transient vs scoped https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddSingleton<FirestoreDb>(serviceProvider =>
@@ -71,16 +75,11 @@ namespace Api
 
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info { Title = "DevKnowledgebase API", Version = "v1" });
-                options.AddSecurityDefinition("Api Key", new ApiKeyScheme
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "DevKnowledgebase API", Version = "v1" });
+                options.AddSecurityDefinition("Api Key", ApiKeySecurityScheme.Instance());
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
-                    Name = ApiKeyAuthorizationFilter._apiKeyHeader,
-                    In = "Header",
-                    Description = "Please enter the api key for the application.",
-                });
-                options.AddSecurityRequirement(new Dictionary<string, IEnumerable<string>>
-                {
-                    { "Api Key", Enumerable.Empty<string>() },
+                    { ApiKeySecurityScheme.Instance(), new List<string>() },
                 });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -90,7 +89,7 @@ namespace Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -102,6 +101,7 @@ namespace Api
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
             app.UseHttpsRedirection();
             app.UseMvc();
 

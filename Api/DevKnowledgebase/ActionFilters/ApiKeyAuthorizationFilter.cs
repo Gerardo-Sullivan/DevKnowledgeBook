@@ -11,7 +11,7 @@ namespace Api.ActionFilters
 {
     public class ApiKeyAuthorizationFilter : IAuthorizationFilter
     {
-        public const string _apiKeyHeader = "Api-Key";
+        public const string API_HEADER = "Api-Key";
 
         private readonly string _apiKey;
         private readonly ILogger<ApiKeyAuthorizationFilter> _logger;
@@ -26,11 +26,11 @@ namespace Api.ActionFilters
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            bool hasApiKeyHeader = context.HttpContext.Request.Headers.TryGetValue(_apiKeyHeader, out StringValues clientApiKey);
+            bool hasApiKeyHeader = context.HttpContext.Request.Headers.TryGetValue(API_HEADER, out StringValues clientApiKey);
 
             if (!hasApiKeyHeader)
             {
-                var errorMessage = $"{_apiKeyHeader} header missing.";
+                var errorMessage = $"{API_HEADER} header missing.";
                 var errorResponse = new ErrorResponse
                 {
                     Request = context.HttpContext.Request.Path.Value,
@@ -49,7 +49,7 @@ namespace Api.ActionFilters
 
             if (!clientApiKey.ToString().Equals(_apiKey))
             {
-                var errorMessage = $"{_apiKeyHeader} is invalid.";
+                var errorMessage = $"{API_HEADER} is invalid.";
                 var errorResponse = new ErrorResponse
                 {
                     Request = context.HttpContext.Request.Path.Value,
