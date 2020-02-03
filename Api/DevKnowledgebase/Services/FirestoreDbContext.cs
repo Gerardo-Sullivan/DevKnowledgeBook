@@ -1,4 +1,5 @@
-﻿using Api.Models.Firestore;
+﻿using Api.Models.Contracts;
+using Api.Models.Firestore;
 using Google.Cloud.Firestore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,7 +13,7 @@ namespace Api.Services
     {
         Task<Bookmark> GetBookmarkFromUrlAsync(string url);
         Task<Bookmark> GetBookmarkAsync(string id);
-        Task<List<Bookmark>> GetBookmarksAsync();
+        Task<List<Bookmark>> GetBookmarksAsync(GetBookmarksRequest request);
         Task<bool> HasBookmarkAsync(string url);
         Task<Bookmark> AddBookmarkAsync(Bookmark bookmark);
     }
@@ -21,7 +22,7 @@ namespace Api.Services
     {
         private readonly FirestoreDb _db;
         private readonly CollectionReference _bookmarksCollection;
-        private ILogger<FirestoreDbContext> _logger;
+        private readonly ILogger<FirestoreDbContext> _logger;
 
         public FirestoreDbContext(
             FirestoreDb db,
@@ -99,9 +100,11 @@ namespace Api.Services
         /// Returns an empty list if no bookmarks exists.
         /// </remarks>
         /// <returns></returns>
-        public async Task<List<Bookmark>> GetBookmarksAsync()
+        public async Task<List<Bookmark>> GetBookmarksAsync(GetBookmarksRequest request)
         {
-            _logger.LogDebug("Getting all Bookmarks from firestrore.");
+            //TODO: change query to handle request
+
+            _logger.LogDebug("Getting Bookmarks from firestore.");
             List<Bookmark> bookmarks = new List<Bookmark>();
             QuerySnapshot bookmarksSnapshot = await _bookmarksCollection.GetSnapshotAsync();
 

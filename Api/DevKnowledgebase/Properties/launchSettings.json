@@ -18,7 +18,7 @@
       "launchBrowser": true,
       "launchUrl": "api/docs",
       "environmentVariables": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\Gerardo\\dev-knowledge-book-firebase-adminsdk-c7myl-5090886adb.json",
+        "GOOGLE_APPLICATION_CREDENTIALS": "dev-knowledge-book-firebase-adminsdk-c7myl-5090886adb.json",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -27,7 +27,7 @@
       "launchBrowser": true,
       "launchUrl": "docs",
       "environmentVariables": {
-        "GOOGLE_APPLICATION_CREDENTIALS": "C:\\Users\\Gerardo\\dev-knowledge-book-firebase-adminsdk-c7myl-5090886adb.json",
+        "GOOGLE_APPLICATION_CREDENTIALS": "dev-knowledge-book-firebase-adminsdk-c7myl-5090886adb.json",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },

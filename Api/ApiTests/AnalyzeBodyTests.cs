@@ -1,4 +1,4 @@
-using Api.Models;
+using Api.Models.Contacts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ApiTests
@@ -9,7 +9,7 @@ namespace ApiTests
         [TestMethod]
         public void UrlSetterNoTrimTest()
         {
-            var body = new AnalyzeBody { Url = "https://www.google.com" };
+            var body = new AnalyzeRequest { Url = "https://www.google.com" };
 
             Assert.AreEqual("https://www.google.com", body.Url);
         }
@@ -17,7 +17,7 @@ namespace ApiTests
         [TestMethod]
         public void UrlSetterTrimTest1()
         {
-            var body = new AnalyzeBody { Url = "https://www.google.com/" };
+            var body = new AnalyzeRequest { Url = "https://www.google.com/" };
 
             Assert.AreEqual("https://www.google.com", body.Url);
         }
@@ -25,7 +25,7 @@ namespace ApiTests
         [TestMethod]
         public void UrlSetterTrimTest2()
         {
-            var body = new AnalyzeBody { Url = "https://www.google.com//////" };
+            var body = new AnalyzeRequest { Url = "https://www.google.com//////" };
 
             Assert.AreEqual("https://www.google.com", body.Url);
         }

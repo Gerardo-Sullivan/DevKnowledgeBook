@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Api.Models
+namespace Api.Models.Contacts
 {
-    public class AnalyzeBody
+    public class AnalyzeRequest
     {
         private string _url;
 
@@ -22,7 +22,7 @@ namespace Api.Models
         }
 
         public List<string> Tags { get; set; }
-        public AnalyzeBody()
+        public AnalyzeRequest()
         {
             Tags = new List<string>();
         }

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
+using Api.Models.Contracts;
 using Api.Models.Firestore;
 using Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -55,9 +56,9 @@ namespace Api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(List<Bookmark>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromBody]GetBookmarksRequest request)
         {
-            List<Bookmark> bookmarks = await _dbContext.GetBookmarksAsync();
+            List<Bookmark> bookmarks = await _dbContext.GetBookmarksAsync(request);
 
             return Ok(bookmarks);
         }
