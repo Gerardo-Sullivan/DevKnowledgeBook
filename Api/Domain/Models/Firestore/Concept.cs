@@ -1,7 +1,7 @@
 ﻿using Google.Cloud.Firestore;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 
-namespace Api.Models.Firestore
+namespace Domain.Models.Firestore
 {
     [FirestoreData]
     public class Concept

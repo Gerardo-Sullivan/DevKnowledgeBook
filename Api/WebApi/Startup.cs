@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using Google.Cloud.Firestore;
-using Api.Services;
 using System.Reflection;
 using System.IO;
 using Api.ActionFilters;
@@ -16,6 +15,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Api.Models;
+using Domain.Services;
 
 namespace Api
 {

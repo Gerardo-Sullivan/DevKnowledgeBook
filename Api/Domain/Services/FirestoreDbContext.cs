@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApiContracts;
 
-namespace Api.Services
+namespace Domain.Services
 {
     public interface IFirestoreDbContext
     {

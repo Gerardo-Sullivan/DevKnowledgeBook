@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Services;
 using Domain.Models.Firestore;
+using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebApiContracts;
 

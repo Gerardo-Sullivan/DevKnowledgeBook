@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Api.Models.Firestore
+namespace Domain.Models.Firestore
 {
     [FirestoreData]
     public class User
