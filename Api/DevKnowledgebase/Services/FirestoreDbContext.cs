@@ -1,11 +1,11 @@
-﻿using Api.Models.Contracts;
-using Api.Models.Firestore;
+﻿using Domain.Models.Firestore;
 using Google.Cloud.Firestore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApiContracts;
 
 namespace Api.Services
 {

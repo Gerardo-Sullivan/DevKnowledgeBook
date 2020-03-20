@@ -1,7 +1,7 @@
-using Api.Models.Contacts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WebApiContracts;
 
-namespace ApiTests
+namespace WebApiTests
 {
     [TestClass]
     public class AnalyzeBodyTests

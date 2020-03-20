@@ -1,10 +1,7 @@
-﻿using Api.Models.Firestore;
+﻿using Domain.Models.Firestore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ApiTests.BookmarkTests
+namespace WebApiTests.BookmarkTests
 {
     [TestClass]
     public class DefaultConstructorTests

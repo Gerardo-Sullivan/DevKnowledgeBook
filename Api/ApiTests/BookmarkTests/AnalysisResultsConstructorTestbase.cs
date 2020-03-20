@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ApiTests.BookmarkTests
+namespace WebApiTests.BookmarkTests
 {
     public abstract class AnalysisResultsConstructorTestBase
     {

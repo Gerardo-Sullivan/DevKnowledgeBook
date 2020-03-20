@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using Api.Models.Firestore;
 using Api.Services;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using Microsoft.AspNetCore.Mvc;
 using Api.Extensions;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Api.Models.Contacts;
+using Domain.Models.Firestore;
+using WebApiContracts;
 
 namespace Api.Controllers
 {

@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Threading.Tasks;
-using Api.Models.Contracts;
-using Api.Models.Firestore;
 using Api.Services;
+using Domain.Models.Firestore;
 using Microsoft.AspNetCore.Mvc;
+using WebApiContracts;
 
 namespace Api.Controllers
 {

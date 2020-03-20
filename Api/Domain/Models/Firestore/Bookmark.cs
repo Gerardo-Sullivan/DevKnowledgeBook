@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Api.Models.Firestore
+namespace Domain.Models.Firestore
 {
     [FirestoreData]
     public class Bookmark
