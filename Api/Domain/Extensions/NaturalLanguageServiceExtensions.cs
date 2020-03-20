@@ -1,7 +1,7 @@
 ﻿using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 
-namespace Api.Extensions
+namespace Domain.Extensions
 {
     public static class NaturalLanguageServiceExtensions
     {

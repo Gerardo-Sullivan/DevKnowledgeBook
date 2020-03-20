@@ -11,10 +11,45 @@ namespace Api.Services
 {
     public interface IFirestoreDbContext
     {
+        /// <summary>
+        /// Returns the first <see cref="Bookmark"/> with the matching url property.
+        ///
+        /// Returns <see cref="null"/> if no <see cref="Bookmark"/> with a matching url property was found.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         Task<Bookmark> GetBookmarkFromUrlAsync(string url);
+
+        /// <summary>
+        /// Returns a <see cref="bookmark"/> matching a specific id.
+        ///
+        /// Returns null if no bookmark was found.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         Task<Bookmark> GetBookmarkAsync(string id);
+
+        /// <summary>
+        /// Returns all Bookmarks.
+        /// </summary>
+        /// <remarks>
+        /// Returns an empty list if no bookmarks exists.
+        /// </remarks>
+        /// <returns></returns>
         Task<List<Bookmark>> GetBookmarksAsync(GetBookmarksRequest request);
+
+        /// <summary>
+        /// Returns <see cref="true"/> if a Bookmark was found with the matching url property.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         Task<bool> HasBookmarkAsync(string url);
+
+        /// <summary>
+        /// Adds a Bookmark to the firestore database.
+        /// </summary>
+        /// <param name="bookmark"></param>
+        /// <returns></returns>
         Task<Bookmark> AddBookmarkAsync(Bookmark bookmark);
     }
 
@@ -33,13 +68,6 @@ namespace Api.Services
             _logger = logger;
         }
 
-        /// <summary>
-        /// Returns the first <see cref="Bookmark"/> with the matching url property.
-        ///
-        /// Returns <see cref="null"/> if no <see cref="Bookmark"/> with a matching url property was found.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         public async Task<Bookmark> GetBookmarkFromUrlAsync(string url)
         {
             _logger.LogDebug($"Searching Bookmarks for url equal to '{url}'.");
@@ -62,13 +90,6 @@ namespace Api.Services
             }
         }
 
-        /// <summary>
-        /// Returns a <see cref="bookmark"/> matching a specific id.
-        ///
-        /// Returns null if no bookmark was found.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public async Task<Bookmark> GetBookmarkAsync(string id)
         {
             _logger.LogDebug($"Searching for Bookmark with id '{id}'.");
@@ -93,13 +114,6 @@ namespace Api.Services
             }
         }
 
-        /// <summary>
-        /// Returns all Bookmarks.
-        /// </summary>
-        /// <remarks>
-        /// Returns an empty list if no bookmarks exists.
-        /// </remarks>
-        /// <returns></returns>
         public async Task<List<Bookmark>> GetBookmarksAsync(GetBookmarksRequest request)
         {
             //TODO: change query to handle request
@@ -118,11 +132,6 @@ namespace Api.Services
             return bookmarks;
         }
 
-        /// <summary>
-        /// Returns <see cref="true"/> if a Bookmark was found with the matching url property.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         public async Task<bool> HasBookmarkAsync(string url)
         {
             Query query = _bookmarksCollection.WhereEqualTo("url", url); //TODO: change "url" to use reflection
@@ -138,11 +147,6 @@ namespace Api.Services
             }
         }
 
-        /// <summary>
-        /// Adds a Bookmark to the firestore database.
-        /// </summary>
-        /// <param name="bookmark"></param>
-        /// <returns></returns>
         public async Task<Bookmark> AddBookmarkAsync(Bookmark bookmark)
         {
             DocumentReference bookmarkDocument = await _bookmarksCollection.AddAsync(bookmark);

@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Api.Services;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using Microsoft.AspNetCore.Mvc;
-using Api.Extensions;
 using System.Net;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Domain.Models.Firestore;
 using WebApiContracts;
+using Domain.Extensions;
 
 namespace Api.Controllers
 {
