@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Domain.Models.Firestore;
 using Domain.Extensions;
 using Domain.Services;
-using WebApiContracts.Analyze;
+using WebApi.Contracts.Analyze;
 
 namespace Api.Controllers
 {

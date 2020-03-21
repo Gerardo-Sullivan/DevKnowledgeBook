@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApiContracts.Bookmarks
+namespace WebApi.Contracts.Bookmarks
 {
     public class GetBookmarksRequest : IValidatableObject
     {

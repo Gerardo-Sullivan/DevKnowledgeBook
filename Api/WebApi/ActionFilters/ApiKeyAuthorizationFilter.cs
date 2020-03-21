@@ -4,7 +4,7 @@ using Api.Models.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using WebApi.Models;
-using WebApiContracts.ClientErrors;
+using WebApi.Contracts.ClientErrors;
 using Common;
 
 namespace Api.ActionFilters

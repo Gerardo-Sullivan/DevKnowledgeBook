@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace WebApiTests.BookmarkTests
+namespace Domain.Tests.BookmarkTests
 {
     [TestClass]
     public class AnalysisResultsTagsConstructorTest : AnalysisResultsConstructorTest

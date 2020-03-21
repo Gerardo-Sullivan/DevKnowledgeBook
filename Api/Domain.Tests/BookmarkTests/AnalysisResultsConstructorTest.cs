@@ -2,7 +2,7 @@
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace WebApiTests.BookmarkTests
+namespace Domain.Tests.BookmarkTests
 {
     [TestClass]
     public class AnalysisResultsConstructorTest : AnalysisResultsConstructorTestBase

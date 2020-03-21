@@ -1,4 +1,4 @@
-﻿namespace WebApiContracts.ClientErrors
+﻿namespace WebApi.Contracts.ClientErrors
 {
     public enum ClientErrorType
     {

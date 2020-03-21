@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebApiContracts.ClientErrors
+namespace WebApi.Contracts.ClientErrors
 {
     /// <summary>
     /// Standard Error Response model for the DevKnowledgebase Web Api

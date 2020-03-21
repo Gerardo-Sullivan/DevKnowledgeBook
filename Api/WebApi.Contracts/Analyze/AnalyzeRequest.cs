@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebApiContracts.Analyze
+namespace WebApi.Contracts.Analyze
 {
     public class AnalyzeRequest
     {

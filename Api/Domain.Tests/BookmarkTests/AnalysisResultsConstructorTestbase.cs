@@ -1,9 +1,7 @@
 ﻿using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace WebApiTests.BookmarkTests
+namespace Domain.Tests.BookmarkTests
 {
     public abstract class AnalysisResultsConstructorTestBase
     {

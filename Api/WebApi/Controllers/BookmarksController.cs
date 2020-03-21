@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Domain.Models.Firestore;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using WebApiContracts.Bookmarks;
+using WebApi.Contracts.Bookmarks;
 
 namespace Api.Controllers
 {
