@@ -8,6 +8,7 @@ using Domain.Models.Firestore;
 using Domain.Extensions;
 using Domain.Services;
 using WebApi.Contracts.Analyze;
+using WebApi.Contracts.ClientErrors;
 
 namespace Api.Controllers
 {
@@ -30,7 +31,7 @@ namespace Api.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
-        [ProducesResponseType(typeof(ModelStateDictionary), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ClientErrorResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Bookmark([Required][FromBody] AnalyzeRequest request)
         {
             var bookmark = await _dbContext.GetBookmarkFromUrlAsync(request.Url);

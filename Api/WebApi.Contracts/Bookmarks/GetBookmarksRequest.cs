@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Contracts.Bookmarks
 {
-    public class GetBookmarksRequest : IValidatableObject
+    [GetBookmarksRequestValidation]
+    public class GetBookmarksRequest
     {
         public string Title { get; set; }
         public string Url { get; set; }
@@ -13,25 +14,9 @@ namespace WebApi.Contracts.Bookmarks
         public List<string> Keywords { get; set; }
         public List<string> Tags { get; set; }
 
-        public bool IsValid()
+        public bool IsValid() //TODO: inherit this from interface
         {
-            bool isValid = false;
-            if (!string.IsNullOrEmpty(Title)
-                || string.IsNullOrEmpty(Url)
-                || Categories.IsNullOrEmpty()
-                || Concepts.IsNullOrEmpty()
-                || Keywords.IsNullOrEmpty()
-                || Tags.IsNullOrEmpty())
-            {
-                isValid = true;
-            }
-
-            return isValid;
-        }
-
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            var validationResults = new List<ValidationResult>();
+            var isValid = true;
             if (string.IsNullOrEmpty(Title)
                 && string.IsNullOrEmpty(Url)
                 && Categories.IsNullOrEmpty()
@@ -39,12 +24,24 @@ namespace WebApi.Contracts.Bookmarks
                 && Keywords.IsNullOrEmpty()
                 && Tags.IsNullOrEmpty())
             {
-                var validationResult = new ValidationResult($"{nameof(GetBookmarksRequest)} must have at least one of the follow properties: ",
-                        new[] { nameof(Title), nameof(Url), nameof(Categories), nameof(Concepts), nameof(Keywords), nameof(Tags) });
-                validationResults.Add(validationResult);
+                isValid = false;
             }
 
-            return validationResults;
+            return isValid;
+        }
+
+        public static string GetProperties()
+        {
+            var type = typeof(GetBookmarksRequest);
+            var properties = type.GetProperties();
+            string result = "";
+
+            foreach (var prop in properties)
+            {
+                result += prop.Name + ", ";
+            }
+
+            return result.Trim().TrimEnd(',');
         }
     }
 }

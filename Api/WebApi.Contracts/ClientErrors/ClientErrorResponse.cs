@@ -5,17 +5,17 @@ namespace WebApi.Contracts.ClientErrors
     /// <summary>
     /// Standard Error Response model for the DevKnowledgebase Web Api
     /// </summary>
-    public class ClientErrorResponse
+    public class ClientErrorResponse //TODO: perhaps add more useful properties
     {
         /// <summary>
-        /// Request sent by the client
+        /// Request sent by the clients
         /// </summary>
         public string Request { get; set; }
 
         /// <summary>
         /// Time error occured
         /// </summary>
-        public DateTimeOffset ErrorTime { get; set; }
+        public DateTimeOffset ErrorTime { get; set; } //TODO: change this name
 
         /// <summary>
         /// Type of Error

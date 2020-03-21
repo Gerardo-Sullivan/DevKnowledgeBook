@@ -6,6 +6,7 @@ using Domain.Models.Firestore;
 using Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Contracts.Bookmarks;
+using WebApi.Contracts.ClientErrors;
 
 namespace Api.Controllers
 {
@@ -66,7 +67,8 @@ namespace Api.Controllers
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType(typeof(List<Bookmark>), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> Search([FromBody]GetBookmarksRequest request)
+        [ProducesResponseType(typeof(ClientErrorResponse), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> Search([Required][FromBody]GetBookmarksRequest request)
         {
             List<Bookmark> bookmarks = await _dbContext.GetBookmarksAsync(request);
 
