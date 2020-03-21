@@ -16,6 +16,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Api.Models;
 using Domain.Services;
+using WebApi;
+using System.Text.Json.Serialization;
 
 namespace Api
 {
@@ -31,6 +33,10 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = DevKnowledgebaseModelStateValidator.ValidateModelState;
+            });
             services.Configure<DevKnowledgeBookConfiguration>(Configuration.GetSection("DevKnowledgeBook"));
             services.Configure<IbmConfiguration>(Configuration.GetSection("IBM"));
 
@@ -43,8 +49,17 @@ namespace Api
             {
                 options.EnableEndpointRouting = false;
                 options.Filters.Add<ApiKeyAuthorizationFilter>();
-                options.Filters.Add<ValidateModelAttribute>();
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                //options.Filters.Add<ValidateModelAttribute>();
+            })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.InvalidModelStateResponseFactory = DevKnowledgebaseModelStateValidator.ValidateModelState;
+                })
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
             //TODO: Read about singleton vs transient vs scoped https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-3.0
             services.AddSingleton<FirestoreDb>(serviceProvider =>
