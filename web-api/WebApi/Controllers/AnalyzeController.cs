@@ -1,10 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using Domain.Models.Firestore;
-using Domain.Extensions;
 using Domain.Services;
 using WebApi.Contracts.Analyze;
 using WebApi.Contracts.ClientErrors;
@@ -17,10 +15,10 @@ namespace WebApi.Controllers
     [Consumes("application/json")]
     public class AnalyzeController : ControllerBase
     {
-        private readonly INaturalLanguageUnderstandingService _naturalLanguageService;
+        private readonly INaturalLangaugeService _naturalLanguageService;
         private readonly IFirestoreDbContext _dbContext;
 
-        public AnalyzeController(INaturalLanguageUnderstandingService naturalLanguageService, IFirestoreDbContext dbService)
+        public AnalyzeController(INaturalLangaugeService naturalLanguageService, IFirestoreDbContext dbService)
         {
             _naturalLanguageService = naturalLanguageService;
             _dbContext = dbService;

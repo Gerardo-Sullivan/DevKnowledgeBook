@@ -66,8 +66,6 @@ namespace WebApi
                 return FirestoreDb.Create(Configuration["Firebase:ProjectID"]); //TODO: Add google environment variable https://cloud.google.com/docs/authentication/getting-started
             });
 
-            services.AddSingleton<IFirestoreDbContext, FirestoreDbContext>();
-
             services.AddSingleton<INaturalLanguageUnderstandingService>(serviceProvider =>
             {
                 var IbmConfiguration = serviceProvider.GetService<IOptions<IbmConfiguration>>().Value;
@@ -83,6 +81,9 @@ namespace WebApi
 
                 return naturalLanguageService;
             });
+
+            services.AddSingleton<IFirestoreDbContext, FirestoreDbContext>();
+            services.AddSingleton<INaturalLangaugeService, NaturalLangaugeService>();
 
             services.AddSwaggerGen(options =>
             {
