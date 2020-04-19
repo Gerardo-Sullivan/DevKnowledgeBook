@@ -48,7 +48,7 @@ namespace WebApi
             {
                 options.EnableEndpointRouting = false;
                 options.Filters.Add<ApiKeyAuthorizationFilter>();
-                //options.Filters.Add<ValidateModelAttribute>();
+                options.Filters.Add<DevKnowledgeBookExceptionFilter>();
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .ConfigureApiBehaviorOptions(options =>
@@ -83,7 +83,7 @@ namespace WebApi
             });
 
             services.AddSingleton<IFirestoreDbContext, FirestoreDbContext>();
-            services.AddSingleton<INaturalLangaugeService, NaturalLangaugeService>();
+            services.AddSingleton<INaturalLanguageService, NaturalLanguageService>();
 
             services.AddSwaggerGen(options =>
             {

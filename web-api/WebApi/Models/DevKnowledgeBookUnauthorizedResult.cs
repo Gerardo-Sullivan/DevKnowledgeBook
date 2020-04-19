@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApi.Contracts.ClientErrors;
+using WebApi.Contracts.Errors;
 
 namespace WebApi.Models
 {
     public class DevKnowledgeBookUnauthorizedResult : UnauthorizedObjectResult
     {
-        public DevKnowledgeBookUnauthorizedResult(ClientErrorResponse errorResponse) : base(errorResponse)
+        public DevKnowledgeBookUnauthorizedResult(ErrorResponse errorResponse) : base(errorResponse)
         {
         }
     }

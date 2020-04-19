@@ -2,10 +2,10 @@
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Domain.Tests.BookmarkTests
+namespace Domain.Tests.Models.Firestore
 {
     [TestClass]
-    public class AnalysisResultsConstructorTest : AnalysisResultsConstructorTestBase
+    public class BookmarkAnalysisResultsConstructorTest : BookmarkAnalysisResultsConstructorTestBase
     {
         [TestMethod]
         public void CategoriesNotNullTest()

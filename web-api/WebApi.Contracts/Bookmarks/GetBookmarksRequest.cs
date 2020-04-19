@@ -1,6 +1,5 @@
-﻿using Common;
+﻿using Common.Extensions;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Contracts.Bookmarks
 {

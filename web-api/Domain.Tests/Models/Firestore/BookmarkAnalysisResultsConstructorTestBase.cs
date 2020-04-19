@@ -1,9 +1,9 @@
 ﻿using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using System.Collections.Generic;
 
-namespace Domain.Tests.BookmarkTests
+namespace Domain.Tests.Models.Firestore
 {
-    public abstract class AnalysisResultsConstructorTestBase
+    public abstract class BookmarkAnalysisResultsConstructorTestBase
     {
         protected readonly AnalysisResults _analysisResults = new AnalysisResults
         {

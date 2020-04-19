@@ -1,11 +1,10 @@
-﻿using Domain.Models.Firestore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
-namespace Domain.Tests.BookmarkTests
+namespace Domain.Tests.Models.Firestore
 {
     [TestClass]
-    public class AnalysisResultsTagsConstructorTest : AnalysisResultsConstructorTest
+    public class BookmarkAnalysisResultsTagsConstructorTest : BookmarkAnalysisResultsConstructorTest
     {
         private readonly List<string> _tags = new List<string> { "tag" };
 

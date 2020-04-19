@@ -1,10 +1,10 @@
 ﻿using Domain.Models.Firestore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Domain.Tests.BookmarkTests
+namespace Domain.Tests.Models.Firestore
 {
     [TestClass]
-    public class DefaultConstructorTests
+    public class BookmarkDefaultConstructorTests
     {
         [TestMethod]
         public void CategoriesNotNullTest()

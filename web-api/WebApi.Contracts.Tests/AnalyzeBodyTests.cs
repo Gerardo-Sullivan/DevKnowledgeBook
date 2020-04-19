@@ -1,7 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WebApi.Contracts.Analyze;
 
-namespace Domain.Tests
+namespace WebApi.Contracts.Tests
 {
     [TestClass]
     public class AnalyzeBodyTests

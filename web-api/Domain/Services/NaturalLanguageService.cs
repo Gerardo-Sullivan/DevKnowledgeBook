@@ -1,11 +1,13 @@
-﻿using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
+﻿using Common.Extensions;
+using Domain.Exceptions;
+using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1;
 using IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1.Model;
 using Microsoft.Extensions.Logging;
 using System;
 
 namespace Domain.Services
 {
-    public interface INaturalLangaugeService
+    public interface INaturalLanguageService
     {
         /// <summary>
         /// Analyze url using <see cref="INaturalLanguageUnderstandingService"/>
@@ -13,23 +15,24 @@ namespace Domain.Services
         AnalysisResults Analyze(string url);
     }
 
-    public class NaturalLangaugeService : INaturalLangaugeService
+    public class NaturalLanguageService : INaturalLanguageService
     {
         private readonly INaturalLanguageUnderstandingService _naturalLanguageUnderstandingService;
-        private readonly ILogger<NaturalLangaugeService> _logger;
+        private readonly ILogger<NaturalLanguageService> _logger;
 
-        public NaturalLangaugeService(
+        public NaturalLanguageService(
             INaturalLanguageUnderstandingService naturalLanguageUnderstandingService,
-            ILogger<NaturalLangaugeService> logger
+            ILogger<NaturalLanguageService> logger
         )
         {
             _naturalLanguageUnderstandingService = naturalLanguageUnderstandingService;
             _logger = logger;
         }
 
+        /// <inheritdoc/>
         public AnalysisResults Analyze(string url)
         {
-            AnalysisResults result = null;
+            AnalysisResults result;
             Parameters parameters = new Parameters
             {
                 Url = url,
@@ -50,9 +53,8 @@ namespace Domain.Services
             catch (AggregateException e)
             {
                 var loggedException = e.InnerException ?? e;
-                _logger.LogError(loggedException, $"Bad request url for analyze {url}");
-                //TODO: add service level exception to throw
-                //TODO: add exception action filter
+                _logger.LogError(loggedException, $"Bad request url for analysis: {url}");
+                throw new NaturalLangaugeInvalidUrlException("Bad request url for analysis", url, loggedException);
             }
 
             return result;

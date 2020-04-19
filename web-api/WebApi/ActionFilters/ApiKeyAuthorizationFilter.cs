@@ -3,9 +3,10 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
 using WebApi.Models;
-using WebApi.Contracts.ClientErrors;
-using Common;
 using WebApi.Models.Configuration;
+using Common.Extensions;
+using WebApi.Contracts.Errors;
+using System.Net;
 
 namespace WebApi.ActionFilters
 {
@@ -32,7 +33,7 @@ namespace WebApi.ActionFilters
             if (!hasApiKeyHeader)
             {
                 var errorMessage = $"{API_HEADER} header missing.";
-                var errorResponse = new ClientErrorResponse(request, errorMessage, ClientErrorType.ApiKeyHeaderMissing);
+                var errorResponse = new ErrorResponse(request, HttpStatusCode.Forbidden, ErrorTitle.ApiKeyHeaderMissing, errorMessage);
 
                 _logger.LogWarning(errorMessage);
                 context.Result = new DevKnowledgeBookUnauthorizedResult(errorResponse);
@@ -42,7 +43,7 @@ namespace WebApi.ActionFilters
             if (!clientApiKey.ToString().Equals(_apiKey)) //TODO: look into which StringComparison to use if any
             {
                 var errorMessage = $"{API_HEADER} is invalid.";
-                var errorResponse = new ClientErrorResponse(request, errorMessage, ClientErrorType.ApiKeyDidNotMatch);
+                var errorResponse = new ErrorResponse(request, HttpStatusCode.Forbidden, ErrorTitle.ApiKeyDidNotMatch, errorMessage);
 
                 _logger.LogWarning(errorMessage);
                 context.Result = new DevKnowledgeBookUnauthorizedResult(errorResponse);

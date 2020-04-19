@@ -5,7 +5,7 @@ using System.Net;
 using Domain.Models.Firestore;
 using Domain.Services;
 using WebApi.Contracts.Analyze;
-using WebApi.Contracts.ClientErrors;
+using WebApi.Contracts.Errors;
 
 namespace WebApi.Controllers
 {
@@ -15,10 +15,10 @@ namespace WebApi.Controllers
     [Consumes("application/json")]
     public class AnalyzeController : ControllerBase
     {
-        private readonly INaturalLangaugeService _naturalLanguageService;
+        private readonly INaturalLanguageService _naturalLanguageService;
         private readonly IFirestoreDbContext _dbContext;
 
-        public AnalyzeController(INaturalLangaugeService naturalLanguageService, IFirestoreDbContext dbService)
+        public AnalyzeController(INaturalLanguageService naturalLanguageService, IFirestoreDbContext dbService)
         {
             _naturalLanguageService = naturalLanguageService;
             _dbContext = dbService;
@@ -28,7 +28,7 @@ namespace WebApi.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
-        [ProducesResponseType(typeof(ClientErrorResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Bookmark([Required][FromBody] AnalyzeRequest request)
         {
             var bookmark = await _dbContext.GetBookmarkFromUrlAsync(request.Url);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Common
+namespace Common.Extensions
 {
     public static class ActionContextExtensions
     {

@@ -1,9 +1,10 @@
-﻿using Common;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Linq;
 using WebApi.Models;
-using WebApi.Contracts.ClientErrors;
+using Common.Extensions;
+using WebApi.Contracts.Errors;
+using System.Net;
 
 namespace WebApi
 {
@@ -17,7 +18,7 @@ namespace WebApi
             .First(x => x.Value.Errors.Count > 0);
             string errorMessage = entry.Errors.First().ErrorMessage;
 
-            var errorResponse = new ClientErrorResponse(request, errorMessage, ClientErrorType.InvalidModel);
+            var errorResponse = new ErrorResponse(request, HttpStatusCode.BadRequest, ErrorTitle.InvalidModel, errorMessage);
 
             return new DevKnowledgeBookUnauthorizedResult(errorResponse);
         }
