@@ -1,0 +1,1 @@
+https://blog.miguelgrinberg.com/post/writing-a-javascript-rest-client

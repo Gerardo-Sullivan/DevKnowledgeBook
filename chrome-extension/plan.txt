@@ -1,0 +1,9 @@
+- paste url
+- send url
+    - only send if browser has cache
+    - loading spinner
+    - handle all errors (intial will just throw error)
+    - signal url saved to user
+- config
+    - api key
+    - save api key to browser cache

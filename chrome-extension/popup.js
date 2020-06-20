@@ -1,5 +1,10 @@
-void function saveBookmark() {
-    var url = document.getElementById("url").innerHTML;
-}
+const form = document.querySelector('form');
+const url = document.getElementById("url");
+let baseUrl = localStorage.getItem('baseUrl');
+let apiKey = localStorage.getItem('apiKey');
 
-document.getElementById("save").addEventListener("click", saveBookmark);
+form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    url.value;
+})
+
