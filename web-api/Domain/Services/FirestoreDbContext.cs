@@ -9,57 +9,7 @@ using WebApi.Contracts.Bookmarks;
 
 namespace Domain.Services
 {
-    public interface IFirestoreDbContext
-    {
-        /// <summary>
-        /// Returns the first <see cref="Bookmark"/> with the matching url property.
-        ///
-        /// Returns <see cref="null"/> if no <see cref="Bookmark"/> with a matching url property was found.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        Task<Bookmark> GetBookmarkFromUrlAsync(string url);
-
-        /// <summary>
-        /// Returns a <see cref="bookmark"/> matching a specific id.
-        ///
-        /// Returns null if no bookmark was found.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<Bookmark> GetBookmarkAsync(string id);
-
-        /// <summary>
-        /// Returns all <see cref="Bookmark"/>s.
-        /// </summary>
-        /// <remarks>
-        /// Returns an empty list if no bookmarks exists.
-        /// </remarks>
-        /// <returns></returns>
-        Task<List<Bookmark>> GetBookmarksAsync();
-
-        /// <summary>
-        /// Returns all <see cref="Bookmark"/>s that result from the given <see cref="GetBookmarksRequest"/>
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        Task<List<Bookmark>> GetBookmarksAsync(GetBookmarksRequest request);
-
-        /// <summary>
-        /// Returns <see cref="true"/> if a <see cref="Bookmark"/> was found with the matching url property.
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        Task<bool> HasBookmarkAsync(string url);
-
-        /// <summary>
-        /// Adds a <see cref="Bookmark"/> to the firestore database.
-        /// </summary>
-        /// <param name="bookmark"></param>
-        /// <returns></returns>
-        Task<Bookmark> AddBookmarkAsync(Bookmark bookmark);
-    }
-
+    /// <inheritdoc cref="IFirestoreDbContext"/>
     public class FirestoreDbContext : IFirestoreDbContext
     {
         private readonly FirestoreDb _db;
@@ -75,6 +25,7 @@ namespace Domain.Services
             _logger = logger;
         }
 
+        /// <inheritdoc/>
         public async Task<Bookmark> GetBookmarkFromUrlAsync(string url)
         {
             _logger.LogDebug($"Searching Bookmarks for url equal to '{url}'.");
@@ -92,11 +43,12 @@ namespace Domain.Services
             }
             else
             {
-                _logger.LogInformation($"No Boomark found with url equal to '{url}'");
+                _logger.LogInformation($"No Bookmark found with url equal to '{url}'");
                 return null;
             }
         }
 
+        /// <inheritdoc/>
         public async Task<Bookmark> GetBookmarkAsync(string id)
         {
             _logger.LogDebug($"Searching for Bookmark with id '{id}'.");
@@ -121,6 +73,7 @@ namespace Domain.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<List<Bookmark>> GetBookmarksAsync()
         {
             //TODO: change query to handle request
@@ -134,17 +87,19 @@ namespace Domain.Services
                 bookmarks.Add(bookmarkSnapshot.ConvertTo<Bookmark>());
             }
 
-            _logger.LogInformation($"{bookmarks.Count} Boomarks in firestore.");
+            _logger.LogInformation($"{bookmarks.Count} Bookmarks in firestore.");
 
             return bookmarks;
         }
 
+        /// <inheritdoc/>
         public async Task<List<Bookmark>> GetBookmarksAsync(GetBookmarksRequest request)
         {
             _logger.LogDebug("Getting all Bookmarks from firestore.");
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public async Task<bool> HasBookmarkAsync(string url)
         {
             Query query = _bookmarksCollection.WhereEqualTo("url", url); //TODO: change "url" to use reflection
@@ -160,6 +115,7 @@ namespace Domain.Services
             }
         }
 
+        /// <inheritdoc/>
         public async Task<Bookmark> AddBookmarkAsync(Bookmark bookmark)
         {
             DocumentReference bookmarkDocument = await _bookmarksCollection.AddAsync(bookmark);

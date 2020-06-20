@@ -48,7 +48,7 @@ namespace WebApi
             {
                 options.EnableEndpointRouting = false;
                 options.Filters.Add<ApiKeyAuthorizationFilter>();
-                options.Filters.Add<DevKnowledgeBookExceptionFilter>();
+                options.Filters.Add<ApiExceptionFilter>();
             })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .ConfigureApiBehaviorOptions(options =>

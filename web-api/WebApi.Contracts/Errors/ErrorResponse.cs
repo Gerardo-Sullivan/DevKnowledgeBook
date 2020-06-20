@@ -38,6 +38,10 @@ namespace WebApi.Contracts.Errors
         /// </summary>
         public DateTimeOffset ErrorTime { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorResponse"/> class with the
+        /// request, http status code, title, description and error time of the error.
+        /// </summary>
         public ErrorResponse(
             string request,
             HttpStatusCode statusCode,
@@ -58,6 +62,10 @@ namespace WebApi.Contracts.Errors
             ErrorTime = errorTime;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorResponse"/> class with the
+        /// request, http status code, title and description of the error.
+        /// </summary>
         public ErrorResponse(
             string request,
             HttpStatusCode statusCode,
@@ -72,6 +80,10 @@ namespace WebApi.Contracts.Errors
         )
         { }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorResponse"/> class with the
+        /// request, http status code, title, description, error code and error time of the error.
+        /// </summary>
         public ErrorResponse(
             string request,
             HttpStatusCode statusCode,
@@ -90,6 +102,10 @@ namespace WebApi.Contracts.Errors
             ErrorCode = errorCode;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorResponse"/> class with the
+        /// request, http status code, title, description and error code of the error.
+        /// </summary>
         public ErrorResponse(
             string request,
             HttpStatusCode statusCode,

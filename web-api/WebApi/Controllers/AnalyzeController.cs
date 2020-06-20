@@ -6,11 +6,12 @@ using Domain.Models.Firestore;
 using Domain.Services;
 using WebApi.Contracts.Analyze;
 using WebApi.Contracts.Errors;
+using WebApi.Exceptions;
 
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/analyze")]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class AnalyzeController : ControllerBase
@@ -25,17 +26,16 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
-        [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.OK)]
+        [Route("Bookmark")]
         [ProducesResponseType(typeof(Bookmark), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> Bookmark([Required][FromBody] AnalyzeRequest request)
+        public async Task<IActionResult> PostBookmark([Required][FromBody] AnalyzeRequest request)
         {
             var bookmark = await _dbContext.GetBookmarkFromUrlAsync(request.Url);
 
-            if (bookmark != null) //TODO: might want to save new custom tags
+            if (bookmark != null)
             {
-                return Ok(bookmark);
+                throw new NoBookmarkExitsException("Bookmark already exists", request.Url);
             }
 
             var results = _naturalLanguageService.Analyze(request.Url);

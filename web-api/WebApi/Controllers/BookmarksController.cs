@@ -11,7 +11,7 @@ using WebApi.Contracts.Errors;
 namespace WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/bookmarks")]
     [Produces("application/json")]
     [Consumes("application/json")]
     public class BookmarksController : Controller
@@ -56,6 +56,7 @@ namespace WebApi.Controllers
         //}
 
         [HttpGet]
+        [Route("")]
         [ProducesResponseType(typeof(List<Bookmark>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Get()
         {
@@ -65,7 +66,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("[action]")]
+        [Route("search")]
         [ProducesResponseType(typeof(List<Bookmark>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> Search([Required][FromBody]GetBookmarksRequest request)

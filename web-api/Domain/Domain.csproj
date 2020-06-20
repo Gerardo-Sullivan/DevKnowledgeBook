@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Firestore" Version="1.1.0" />
     <PackageReference Include="IBM.WatsonDeveloperCloud.NaturalLanguageUnderstanding.v1" Version="2.17.0" />
